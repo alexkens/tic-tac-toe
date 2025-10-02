@@ -15,17 +15,23 @@ function Board() {
     const newGame = new Game();
 
     return (
-        <div class="border border-white w-50 h-50 grid grid-cols-3">
-            <div id="1" onClick={newGame.move} class="border"></div>
-            <div id="2" class="border"></div>
-            <div id="3" class="border"></div>
-            <div id="4" class="border"></div>
-            <div id="5" class="border"></div>
-            <div id="6" class="border"></div>
-            <div id="7" class="border"></div>
-            <div id="8" class="border"></div>
-            <div id="9" class="border"></div>
+        <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1">
+            <Cell id="0" moveFunc={newGame.move}/>
+            <Cell id="1" moveFunc={newGame.move}/>
+            <Cell id="2" moveFunc={newGame.move}/>
         </div>
+    );
+}
+
+function Cell({ id, moveFunc}) {
+    const [text, setText] = useState("");
+
+    function handleClick() {
+        setText(moveFunc(id));
+    }
+
+    return (
+        <div id={id} onClick={handleClick} class=" border rounded-sm flex justify-center items-center text-xl">{ text }</div>
     );
 }
 
