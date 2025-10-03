@@ -35,6 +35,10 @@ function Board() {
     );
 }
 
+function winningAlert() {
+    
+}
+
 function Cell({ id, game}) {
     const [text, setText] = useState("");
 
