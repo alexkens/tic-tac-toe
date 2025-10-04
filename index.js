@@ -21,36 +21,61 @@ function Board() {
     const newGame = new Game();
 
     return (
-        <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1">
-            <Cell id={0} game={newGame} />
-            <Cell id={1} game={newGame} />
-            <Cell id={2} game={newGame} />
-            <Cell id={3} game={newGame} />
-            <Cell id={4} game={newGame} />
-            <Cell id={5} game={newGame} />
-            <Cell id={6} game={newGame} />
-            <Cell id={7} game={newGame} />
-            <Cell id={8} game={newGame} />
+        <div>
+            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1">
+                <Cell id={0} game={newGame} />
+                <Cell id={1} game={newGame} />
+                <Cell id={2} game={newGame} />
+                <Cell id={3} game={newGame} />
+                <Cell id={4} game={newGame} />
+                <Cell id={5} game={newGame} />
+                <Cell id={6} game={newGame} />
+                <Cell id={7} game={newGame} />
+                <Cell id={8} game={newGame} />
+            </div>
+            <EndStatement game={newGame} />
         </div>
     );
 }
 
-function winningAlert() {
+function EndStatement({game}) {
+    let context = ". . .";
     
+    if(game.winner && !game.gameFinished) {
+        context = `${game.winnder} has won`;
+    } else if(game.gameFinished && !game.winnder) {
+        context = "No moves are possible";
+    }
+
+    return(
+        <div class="bg-white text-amber-300">Message: {context}</div>
+    );
 }
 
 function Cell({ id, game}) {
     const [text, setText] = useState("");
 
     function handleClick() {
-        const moveResponse = game.move(id);
+        // check if game is over
+        if(game.winner || game.gameFinished) return;
         
-        if(moveResponse) {
+        // make move internally
+        const [moveResponse, moveBool] = game.move(id);
+
+        // make move in frontend
+        if(moveBool) {
             setText(moveResponse);
         } else {
-            console.log("Position is occupied.");
-        }
-        
+            if(game.winner) {
+                setText(moveResponse);
+                console.log(`${game.winner} has won!`);
+            } else if (game.gameFinished && !game.winner) {
+                setText(moveResponse);
+                console.log("No possible Moves!");
+            } else {
+                console.log("Position is occupied.");
+            }
+        } 
     }
 
     return (

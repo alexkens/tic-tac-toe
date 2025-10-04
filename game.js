@@ -51,23 +51,17 @@ class Game {
             console.log(this.board);
             this.endOfGame();
 
-            if(this.winner) {
-                console.log("ITS DONE! AND WE HAVE A WINNDER");
-                return false;
-            } else if(this.gameFinished) {
-                console.log("THERE ARE NO POSSIBLE MOVES!");
-                return false;
-            } else {
-                
+            if(this.winner || this.gameFinished) {
+                return [this.moveHistory.at(-1).player, false];
             }
 
-            return this.moveHistory.at(-1).player;
+            return [this.moveHistory.at(-1).player, true];
 
         } else if(positionValue == "X" || positionValue == "O") {
-            return false;
+            return ["", false];
         } else {
             console.error("Move Error => position value error")
-            return false;
+            return ["", false];
         }
     }
 
