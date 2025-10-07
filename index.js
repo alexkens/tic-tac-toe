@@ -2,7 +2,6 @@ const { useState } = React;
 
 // components
 function PlayerSymbol() {
-    
     return (
         <div class="flex flex-col items-center gap-2">
             <h1>Pick your Player:</h1>
@@ -16,49 +15,35 @@ function PlayerSymbol() {
     );
 }
 
-function Board() {
+function Board({ game }) {
 
-    const newGame = new Game();
+    const [gameEnd, setGameEnd] = useState(". . .");
 
     return (
         <div>
-            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1">
-                <Cell id={0} game={newGame} />
-                <Cell id={1} game={newGame} />
-                <Cell id={2} game={newGame} />
-                <Cell id={3} game={newGame} />
-                <Cell id={4} game={newGame} />
-                <Cell id={5} game={newGame} />
-                <Cell id={6} game={newGame} />
-                <Cell id={7} game={newGame} />
-                <Cell id={8} game={newGame} />
+            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1 shadow-md">
+                <Cell id={0} game={game} setGameEnd={setGameEnd} />
+                <Cell id={1} game={game} setGameEnd={setGameEnd} />
+                <Cell id={2} game={game} setGameEnd={setGameEnd} />
+                <Cell id={3} game={game} setGameEnd={setGameEnd} />
+                <Cell id={4} game={game} setGameEnd={setGameEnd} />
+                <Cell id={5} game={game} setGameEnd={setGameEnd} />
+                <Cell id={6} game={game} setGameEnd={setGameEnd} />
+                <Cell id={7} game={game} setGameEnd={setGameEnd} />
+                <Cell id={8} game={game} setGameEnd={setGameEnd} />
             </div>
-            <EndStatement game={newGame} />
+            <div class="text-black flex justify-center mt-4">{gameEnd}</div>
         </div>
     );
 }
 
-function EndStatement({game}) {
-    let context = ". . .";
-    
-    if(game.winner && !game.gameFinished) {
-        context = `${game.winnder} has won`;
-    } else if(game.gameFinished && !game.winnder) {
-        context = "No moves are possible";
-    }
-
-    return(
-        <div class="bg-white text-amber-300">Message: {context}</div>
-    );
-}
-
-function Cell({ id, game}) {
+function Cell({ id, game, setGameEnd}) {
     const [text, setText] = useState("");
 
     function handleClick() {
         // check if game is over
         if(game.winner || game.gameFinished) return;
-        
+
         // make move internally
         const [moveResponse, moveBool] = game.move(id);
 
@@ -69,11 +54,18 @@ function Cell({ id, game}) {
             if(game.winner) {
                 setText(moveResponse);
                 console.log(`${game.winner} has won!`);
+
+                setGameEnd(`${game.winner} has won!`);
+
             } else if (game.gameFinished && !game.winner) {
                 setText(moveResponse);
                 console.log("No possible Moves!");
+
+                setGameEnd("No possible Moves!");
             } else {
                 console.log("Position is occupied.");
+
+                setGameEnd("Position is occupied.");
             }
         } 
     }
@@ -84,12 +76,19 @@ function Cell({ id, game}) {
 }
 
 function App() {
+    const [game, setGame] = useState(new Game());
 
+    function handleReset() {
+        setGame(new Game());
+    }
 
     return (
         <div class="text-white flex flex-col items-center gap-4">
             <PlayerSymbol />
-            <Board />
+            <div class="flex justify-center items-center gap-6">
+                <button onClick={handleReset} class="bg-slate-600 p-2 rounded-lg shadow-md hover:bg-slate-400 hover:text-slate-600 active:border-2" >Reset</button>
+                <Board game={game} />
+            </div>
         </div>
     );
 }

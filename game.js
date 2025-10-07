@@ -75,7 +75,7 @@ class Game {
         // calculate if someone won
         const potentialWinner = this.moveHistory.at(-1).player;
         const occupiedPlayer = potentialWinner == "X" ? this.occupiedX : this.occupiedO;
-        console.log(occupiedPlayer);
+        // console.log(occupiedPlayer);
         const wins = [
             [0, 1, 2],
             [3, 4, 5],
