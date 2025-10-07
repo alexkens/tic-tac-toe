@@ -24,6 +24,7 @@ function Board() {
         for(let i=0; i < 9; i++) {
             setTextList[i]("");
         }
+        setGameEnd(". . .");
     }
 
     const [text0, setText0] = useState("");
@@ -53,6 +54,7 @@ function Board() {
         // make move in frontend
         if(moveBool) {
             setTextList[id](moveResponse);
+            setGameEnd(". . .");
         } else {
             if(game.winner) {
                 setTextList[id](moveResponse);
@@ -74,27 +76,33 @@ function Board() {
     }
 
     return (
-        <div class="flex justify-center items-center gap-6">
-            <button onClick={handleReset} class="bg-slate-600 p-2 rounded-lg shadow-md hover:bg-slate-400 hover:text-slate-600 active:border-1 active:border-white active:box-border" >Reset</button>
-            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1 shadow-md">
-                <Cell id={0} text={text0} onClick={() => handleClick(0, setTextList)} />
-                <Cell id={1} text={text1} onClick={() => handleClick(1, setTextList)} />
-                <Cell id={2} text={text2} onClick={() => handleClick(2, setTextList)} />
-                <Cell id={3} text={text3} onClick={() => handleClick(3, setTextList)} />
-                <Cell id={4} text={text4} onClick={() => handleClick(4, setTextList)} />
-                <Cell id={5} text={text5} onClick={() => handleClick(5, setTextList)} />
-                <Cell id={6} text={text6} onClick={() => handleClick(6, setTextList)} />
-                <Cell id={7} text={text7} onClick={() => handleClick(7, setTextList)} />
-                <Cell id={8} text={text8} onClick={() => handleClick(8, setTextList)} />
+        <div>
+            <div class="flex justify-center items-center gap-6">
+                <button onClick={handleReset} class="bg-slate-600 p-2 rounded-lg shadow-md hover:bg-slate-400 hover:text-slate-600 active:border-1 active:border-white active:box-border" >Reset</button>
+                <div class="border border-white w-48 h-48 grid grid-cols-3 gap-1 p-1 shadow-md">
+                    <Cell id={0} text={text0} onClick={() => handleClick(0, setTextList)} />
+                    <Cell id={1} text={text1} onClick={() => handleClick(1, setTextList)} />
+                    <Cell id={2} text={text2} onClick={() => handleClick(2, setTextList)} />
+                    <Cell id={3} text={text3} onClick={() => handleClick(3, setTextList)} />
+                    <Cell id={4} text={text4} onClick={() => handleClick(4, setTextList)} />
+                    <Cell id={5} text={text5} onClick={() => handleClick(5, setTextList)} />
+                    <Cell id={6} text={text6} onClick={() => handleClick(6, setTextList)} />
+                    <Cell id={7} text={text7} onClick={() => handleClick(7, setTextList)} />
+                    <Cell id={8} text={text8} onClick={() => handleClick(8, setTextList)} />
+                </div>
+                <div class="w-20 text-black flex justify-center mt-4">{gameEnd}</div>
             </div>
-            <div class="text-black flex justify-center mt-4">{gameEnd}</div>
+            <div class="text-center">
+                <div>Move History:</div>
+                <ol>{}</ol>
+            </div>
         </div>
     );
 }
 
 function Cell({ id, text, onClick }) {
     return (
-        <div id={id} onClick={onClick} class="border rounded-sm flex justify-center items-center text-xl">{ text }</div>
+        <div id={id} onClick={onClick} class="w-14 h-14 border rounded-sm flex justify-center items-center text-xl">{ text }</div>
     );
 }
 
