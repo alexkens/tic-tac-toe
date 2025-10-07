@@ -2,7 +2,7 @@
 
 
 class Game {
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    board = ["", "", "", "", "", "", "", "", ""];
     currentTurn = "X";
     turnN = 0;
     moveHistory = [];
@@ -11,6 +11,7 @@ class Game {
     winner = null;
     winningStreak = null;
     gameFinished = false;
+    reset = false;
 
     constructor() {
         console.log(this.board);
@@ -27,7 +28,7 @@ class Game {
     move(position) {
         // 0 = free, "X" || "O" = occupied
         let positionValue = this.board[position]
-        if(positionValue == 0) {
+        if(positionValue == "") {
             
             // actual move on board
             this.board[position] = this.currentTurn;
@@ -105,7 +106,7 @@ class Game {
 
         // no moves are possible
         for(let value of this.board) {
-            if(value == 0) {
+            if(value == "") {
                 return;
             }
         }

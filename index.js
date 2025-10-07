@@ -15,50 +15,53 @@ function PlayerSymbol() {
     );
 }
 
-function Board({ game }) {
-
+function Board() {
     const [gameEnd, setGameEnd] = useState(". . .");
 
-    return (
-        <div>
-            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1 shadow-md">
-                <Cell id={0} game={game} setGameEnd={setGameEnd} />
-                <Cell id={1} game={game} setGameEnd={setGameEnd} />
-                <Cell id={2} game={game} setGameEnd={setGameEnd} />
-                <Cell id={3} game={game} setGameEnd={setGameEnd} />
-                <Cell id={4} game={game} setGameEnd={setGameEnd} />
-                <Cell id={5} game={game} setGameEnd={setGameEnd} />
-                <Cell id={6} game={game} setGameEnd={setGameEnd} />
-                <Cell id={7} game={game} setGameEnd={setGameEnd} />
-                <Cell id={8} game={game} setGameEnd={setGameEnd} />
-            </div>
-            <div class="text-black flex justify-center mt-4">{gameEnd}</div>
-        </div>
-    );
-}
+    const [game, setGame] = useState(new Game());
+    function handleReset() {
+        setGame(new Game());
+        for(let i=0; i < 9; i++) {
+            setTextList[i]("");
+        }
+    }
 
-function Cell({ id, game, setGameEnd}) {
-    const [text, setText] = useState("");
+    const [text0, setText0] = useState("");
+    const [text1, setText1] = useState("");
+    const [text2, setText2] = useState("");
+    const [text3, setText3] = useState("");
+    const [text4, setText4] = useState("");
+    const [text5, setText5] = useState("");
+    const [text6, setText6] = useState("");
+    const [text7, setText7] = useState("");
+    const [text8, setText8] = useState("");
+    const texts = [
+        text0, text1, text2, text3, text4, text5, text6, text7, text8,
+    ];
+    const setTextList = [
+        setText0, setText1, setText2, setText3,setText4, setText5, setText6, setText7, setText8,
+    ];
 
-    function handleClick() {
+    function handleClick(id, setTextList) {
         // check if game is over
         if(game.winner || game.gameFinished) return;
 
         // make move internally
         const [moveResponse, moveBool] = game.move(id);
+        console.log(moveResponse, moveBool);
 
         // make move in frontend
         if(moveBool) {
-            setText(moveResponse);
+            setTextList[id](moveResponse);
         } else {
             if(game.winner) {
-                setText(moveResponse);
+                setTextList[id](moveResponse);
                 console.log(`${game.winner} has won!`);
 
                 setGameEnd(`${game.winner} has won!`);
 
             } else if (game.gameFinished && !game.winner) {
-                setText(moveResponse);
+                setTextList[id](moveResponse);
                 console.log("No possible Moves!");
 
                 setGameEnd("No possible Moves!");
@@ -71,23 +74,36 @@ function Cell({ id, game, setGameEnd}) {
     }
 
     return (
-        <div id={id} onClick={handleClick} class=" border rounded-sm flex justify-center items-center text-xl">{ text }</div>
+        <div class="flex justify-center items-center gap-6">
+            <button onClick={handleReset} class="bg-slate-600 p-2 rounded-lg shadow-md hover:bg-slate-400 hover:text-slate-600 active:border-1 active:border-white active:box-border" >Reset</button>
+            <div class="border border-white w-50 h-50 grid grid-cols-3 gap-1 p-1 shadow-md">
+                <Cell id={0} text={text0} onClick={() => handleClick(0, setTextList)} />
+                <Cell id={1} text={text1} onClick={() => handleClick(1, setTextList)} />
+                <Cell id={2} text={text2} onClick={() => handleClick(2, setTextList)} />
+                <Cell id={3} text={text3} onClick={() => handleClick(3, setTextList)} />
+                <Cell id={4} text={text4} onClick={() => handleClick(4, setTextList)} />
+                <Cell id={5} text={text5} onClick={() => handleClick(5, setTextList)} />
+                <Cell id={6} text={text6} onClick={() => handleClick(6, setTextList)} />
+                <Cell id={7} text={text7} onClick={() => handleClick(7, setTextList)} />
+                <Cell id={8} text={text8} onClick={() => handleClick(8, setTextList)} />
+            </div>
+            <div class="text-black flex justify-center mt-4">{gameEnd}</div>
+        </div>
+    );
+}
+
+function Cell({ id, text, onClick }) {
+    return (
+        <div id={id} onClick={onClick} class="border rounded-sm flex justify-center items-center text-xl">{ text }</div>
     );
 }
 
 function App() {
-    const [game, setGame] = useState(new Game());
-
-    function handleReset() {
-        setGame(new Game());
-    }
-
     return (
         <div class="text-white flex flex-col items-center gap-4">
             <PlayerSymbol />
-            <div class="flex justify-center items-center gap-6">
-                <button onClick={handleReset} class="bg-slate-600 p-2 rounded-lg shadow-md hover:bg-slate-400 hover:text-slate-600 active:border-2" >Reset</button>
-                <Board game={game} />
+            <div>
+                <Board />
             </div>
         </div>
     );
