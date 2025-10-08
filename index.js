@@ -78,7 +78,7 @@ function Board() {
     const moveHistory = game.moveHistory.map((value, index) => {
         return(
             <li class="w-[60%] border rounded-full">
-                Move No. {index}: {value.player} moves to {value.position}
+                {index}: {value.player} moves to {value.position}
             </li>
         );
     });
