@@ -75,6 +75,14 @@ function Board() {
         } 
     }
 
+    const moveHistory = game.moveHistory.map((value, index) => {
+        return(
+            <li class="w-[60%] border rounded-full">
+                Move No. {index}: {value.player} moves to {value.position}
+            </li>
+        );
+    });
+
     return (
         <div>
             <div class="flex justify-center items-center gap-6">
@@ -92,9 +100,9 @@ function Board() {
                 </div>
                 <div class="w-20 text-black flex justify-center mt-4">{gameEnd}</div>
             </div>
-            <div class="text-center">
+            <div class="text-center mt-4">
                 <div>Move History:</div>
-                <ol>{}</ol>
+                <ol class="flex flex-col gap-2 items-center">{moveHistory}</ol>
             </div>
         </div>
     );

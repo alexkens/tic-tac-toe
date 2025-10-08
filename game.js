@@ -1,6 +1,5 @@
 // game logic
 
-
 class Game {
     board = ["", "", "", "", "", "", "", "", ""];
     currentTurn = "X";
@@ -67,11 +66,8 @@ class Game {
     }
 
     endOfGame() {
-
         // earliest win only at move 5 possible
-        if(!(this.turnN >= 5)) {
-            return;
-        }
+        if(!(this.turnN >= 5)) return;
 
         // calculate if someone won
         const potentialWinner = this.moveHistory.at(-1).player;
